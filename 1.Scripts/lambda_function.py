@@ -25,10 +25,10 @@ logger.setLevel(logging.INFO)
 # Constants
 # -----------------------------
 # Environment Variables (Configured in Lambda)
-S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME', 'pvh-kareem')      # //FIXME: - update the s3 bucket name 
-S3_FOLDER_PATH = os.getenv('S3_FOLDER_PATH', 'calendly/')       # //FIXME: - update to calendly folder name 
+S3_BUCKET_NAME = os.getenv('S3_BUCKET_NAME', 'calendly-files-storage')      
+S3_FOLDER_PATH = os.getenv('S3_FOLDER_PATH', 'calendly/') 
 SECRET_NAME = os.getenv('CALENDLY_SECRET_NAME', 'calendly-api-key')
-REGION_NAME = os.getenv('AWS_REGION', 'us-east-1')              # //FIXME: - update the region
+REGION_NAME = os.getenv('AWS_REGION', 'ca-west-1')
 
 # Initialize AWS Clients
 secrets_client = boto3.client('secretsmanager', region_name=REGION_NAME)
@@ -36,13 +36,13 @@ s3_client = boto3.client('s3')
 
 # Generate Timestamp for File Naming 
 timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-S3_CALANDY_PATH = f"{S3_FOLDER_PATH}calandy_scheduled_calls_{timestamp}.csv"
+S3_CALENDLY_PATH = f"{S3_FOLDER_PATH}calandy_scheduled_calls_{timestamp}.csv"
 S3_METRICS_PATH = f"{S3_FOLDER_PATH}campaign_metrics_{timestamp}.csv"
 
 # -----------------------------
 # Functions
 # -----------------------------
-def get_calendy_api_key():
+def get_calendly_api_key():
     """Fetch the Calendy API Key from Secrets Manager."""
     try:
         response = secrets_client.get_sectet_value(SecretId=SECRET_NAME)
@@ -178,4 +178,4 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': json.dumps(f"Lambda execution failed: {e}")
         }
-
+    

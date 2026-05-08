@@ -1,7 +1,7 @@
 # Use AWS Lambda Python 3.9 base image
 # --platform=linux/amd64 forces the image architecture to AMD64
 # This helps avoid compatibility issues if building on Apple Silicon (M1/M2 Macs)
-FROM --platform=linux/amd64 public.ecr.aws/Lambda/Python:3.9
+FROM --platform=linux/amd64 public.ecr.aws/lambda/python:3.9
 
 # Set working directory to /var/task (AWS Lambda defaults)
 # AWS Lambda expects application files in /var/task
@@ -10,7 +10,7 @@ WORKDIR /var/task
 
 # Copy Application files into the container 
     # copy the lambda function source file and dependaciesfrom your local machine into the container
-COPY lambda_function.py .   
+COPY 1.Scripts/lambda_function.py .   
 COPY requirements.txt .
 
 # Install dependancies 
@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 #       -> the Python interpreter included in the Lambda base image 
 #
 # -m awslambdaric 
-#       -> runs the AWS Lambda Runtime Interface Client 
+#       -> runs the AWS Lambda Runtime Interface Client (specifying the language)
 #       -> this component allows the container to communate with AWS Lambda
 ENTRYPOINT [ "/var/lang/bin/python3.9", "-m", "awslambdaric" ]
 
