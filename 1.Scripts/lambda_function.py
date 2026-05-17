@@ -47,7 +47,7 @@ def get_calendly_api_key():
     try:
         response = secrets_client.get_secret_value(SecretId=SECRET_NAME)
         secret = json.loads(response["SecretString"])
-        return secret.get('calendy-api-key')
+        return secret.get('calendly-api-key').strip()
     except Exception as e:
         logger.error(f"Error fetching API key from Secrets Manager {e}")
         raise
