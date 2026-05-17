@@ -45,7 +45,7 @@ S3_METRICS_PATH = f"{S3_FOLDER_PATH}campaign_metrics_{timestamp}.csv"
 def get_calendly_api_key():
     """Fetch the Calendy API Key from Secrets Manager."""
     try:
-        response = secrets_client.get_sectet_value(SecretId=SECRET_NAME)
+        response = secrets_client.get_secret_value(SecretId=SECRET_NAME)
         secret = json.loads(response["SecretString"])
         return secret.get('calendy-api-key')
     except Exception as e:
